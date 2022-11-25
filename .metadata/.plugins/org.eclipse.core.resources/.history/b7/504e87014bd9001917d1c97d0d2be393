@@ -1,0 +1,127 @@
+package whole;
+
+import utility.Reader;
+
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import model.StudentBean;
+
+public class Overall {
+		private static BufferedReader getReader() {   
+			return new BufferedReader(new InputStreamReader(System.in));
+		}
+		
+		public static String readString(String message) {
+			String input = null;
+			try {
+				System.out.print(message + ": ");
+				input = getReader().readLine();
+			} catch (IOException ioe) {
+				System.err.println(ioe.getMessage());
+			}
+			return input; 
+		}
+		
+		public static int readInt(String message){
+			System.out.print(message+ ": ");
+			
+			int input = 0; 
+			try {
+				input = Integer.parseInt(getReader().readLine());
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return input;
+		}
+		
+		public static double readDouble(String message) throws IOException {
+			System.out.print(message);
+			
+			//the method Integer.parseInt() converts a String value 
+			//to a double primitive value
+			return Double.parseDouble(getReader().readLine());
+		}
+		
+		public static void createXMLDatabaseFile(StudentBean estudyante[]) {
+			System.out.println("\nplease wait.. creating an XML database...");		
+			
+			try {
+				XMLEncoder encoder = null;
+				encoder = new XMLEncoder(
+					new BufferedOutputStream(
+				    //
+							new FileOutputStream("db/iAcademy-students.xml")));			
+				 encoder.writeObject(estudyante);
+				 encoder.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		public static StudentBean[] readXMLDatabaseFile(StudentBean estudyante[]) {
+			System.out.println("\nplease wait.. creating an XML database...");
+			
+			try {
+				XMLDecoder decoder = new XMLDecoder(
+	                new BufferedInputStream(
+	                new FileInputStream("db/iAcademy-students.xml")));
+				
+				/*
+				 The code (StudentBean[])decoder.readObject() will perform a data
+				 type explicit/narrowing conversion from the generic java.lang.Object to
+				 model.StudentBean array.
+				 */
+				estudyante = (StudentBean[])decoder.readObject();
+				
+				decoder.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} 
+			return estudyante;
+		}	
+		
+		public static void createPDFStudentList(StudentBean estudyante[]) {
+			Document document = new Document();
+
+		    try {
+		      PdfWriter.getInstance(document,
+		          new FileOutputStream("reports/StudentListReport" 
+		          + new java.util.Date().getTime()+ ".pdf"));
+
+		      /*document.open();
+		      
+		      document.add(Image.getInstance("images/yorme2.jpg"));
+		      document.add(new Paragraph("Student Details"));
+		      document.add(new Paragraph("ID: "+estudyante[0].getId()+"\n"));
+		      document.add(new Paragraph("Name: "+estudyante[0].getName()+"\n"));
+		      document.add(new Paragraph("Course: "+estudyante[0].getCourse()+"\n"));
+		      document.add(new Paragraph("Year Level: "+estudyante[0].getCourse()+"\n"));
+		      document.add(new Paragraph("Gender: "+estudyante[0].isMale()+"\n"));
+		      
+		      document.close();
+		      */
+		    } catch (DocumentException e) {
+		      e.printStackTrace();
+		    } catch (FileNotFoundException e) {
+		      e.printStackTrace();
+		    } catch (IOException ioe) {
+		      ioe.printStackTrace();
+		    }
+
+		}
+
+}
+
+

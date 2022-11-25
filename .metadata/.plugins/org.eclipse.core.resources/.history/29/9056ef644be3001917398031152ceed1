@@ -1,0 +1,201 @@
+package controller;
+
+import model.StudentBean;
+import utility.Reader;
+
+import java.util.*;
+
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Font;
+
+import java.beans.XMLEncoder;
+import java.io.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
+public class AccessStudent {
+	public static void main(String[] args) {
+		
+		System.out.println("Student Registration Database Management System\n");
+		StudentBean student [] = new StudentBean[5];
+		
+		initializeArray(student);
+		option(student);
+		
+	}
+
+	public static void initializeArray(StudentBean student[]) {
+		
+		for (int counter = 0; counter < student.length; counter++) {
+			student[counter] = new StudentBean();
+		}
+	}
+	
+	public static void option(StudentBean student[]) {
+	
+
+		Scanner scan = new Scanner(System.in);
+		
+        String choice;
+        do {
+            System.out.print("[A]-Add Student  \n");
+            System.out.print("[L]-List Student  \n");
+            System.out.print("[S]-Search Student  \n");
+            System.out.print("[D]-Delete Student  \n");
+            System.out.print("[R]-Report Student  \n");
+            System.out.print("[P]-Purge  \n");
+            System.out.print("[Q]-Quit  \n");
+            System.out.println("\nSelection Option:");
+
+            choice = scan.nextLine().toUpperCase();
+            
+            switch(choice){
+
+            case "A":
+            	addStudents(student);	
+            	break;
+            case "L": 
+            	listStudents(student);
+                break;
+            case "S":
+            	searchStudents(student);
+                break;
+            case "D": 
+            	deleteStudents(student);
+                break;
+            case "R":
+            	reportGenerator(student);
+                break;
+            case "P":
+            	purge(student);
+            	break;
+            case "Q": 
+                quit(student);
+                 break;
+            default:
+            System.out.println(choice + " is not in the choices! Select another choice.");
+            
+            }
+        } while(choice != "Q");
+     
+        scan.close();
+        }
+     
+	
+	public static void addStudents(StudentBean student[]) {
+	
+		System.out.println("Option 1 Selected");
+		System.out.println("\nEnter student details");
+
+		String studentId = Reader.readString("Enter id");
+		String lastName = Reader.readString("Enter last name");
+		String firstName = Reader.readString("Enter first name");
+		String course = Reader.readString("Enter course [BSCS-SE][BSCS-GD][BSCS-WD]");
+		if(!course.equalsIgnoreCase("BSCS-SE") && !course.equalsIgnoreCase("BSCS-GD") && !course.equalsIgnoreCase("BSCS-WD")) {
+			System.out.println("Invalid input! Input another course.");
+			course = Reader.readString("Enter course [BSCS-SE][BSCS-GD][BSCS-WD]");
+		}
+
+	   
+
+		
+		int yearLevel = Reader.readInt("Enter year level");
+		int unitsEnrolled = Reader.readInt("Enter units enrolled");
+		System.out.println("------------------");
+		
+			
+		}
+		
+	
+
+	public static void listStudents(StudentBean student[]) {
+		
+		System.out.println("Option 2 Selected");
+		System.out.println("\nPrinting Student Details");
+		System.out.println("Lists of Students Enrolled");
+		System.out.println("--------------------------");
+		System.out.println("--------------------------");
+		int count = 0;
+		for (int counter = 0; counter < student.length; counter++) {
+			System.out.println("Array Index["+counter+"]");
+			System.out.println("ID: " + student[counter].getId());
+			System.out.println("Last Name: " + student[counter].getLastName());
+			System.out.println("First Name: " + student[counter].getFirstName());
+			System.out.println("Course: " + student[counter].getCourse());
+			System.out.println("Year Level: " + student[counter].getYearLevel());
+			System.out.println("------------------");
+			count++;
+
+		System.out.println("Total Students Enrolled: " +count);
+		System.out.println("Total # for SE:" +student[counter].getSe());
+		System.out.println("Total # for GD:" +student[counter].getGd());
+		System.out.println("Total # for WD:" +student[counter].getWd());
+		System.out.println("------------------");
+		}
+	
+	}
+
+	public static void searchStudents(StudentBean student[]) {
+		
+		System.out.println("Option 3 Selected");
+		for (int counter = 0; counter < student.length; counter++) {
+		student[counter].setId(Reader.readString("Enter id"));
+		System.out.println("Searching for student...");
+		
+		try
+		{
+		    Thread.sleep(3000);
+		}
+		catch(InterruptedException ex)
+		{
+		    Thread.currentThread().interrupt();
+		}
+		
+		ArrayList<Integer> studArray = new ArrayList<Integer>(10); {
+
+		 boolean list = studArray.isEmpty(); 
+	        if (list == true) 
+	            System.out.println("The ArrayList is empty"); 
+	        else
+	            System.out.println("The ArrayList is not empty"); 
+		}
+			System.out.println("Array Index["+counter+"]");
+			System.out.println("ID: " + student[counter].getId());
+			System.out.println("Last Name: " + student[counter].getLastName());
+			System.out.println("First Name: " + student[counter].getFirstName());
+			System.out.println("Course: " + student[counter].getCourse());
+			System.out.println("Year Level: " + student[counter].getYearLevel());
+			System.out.println("------------------");
+
+		}  
+	}
+
+	public static void deleteStudents(StudentBean student[]) {
+	}
+
+	public static void reportGenerator(StudentBean student[]) {
+
+		System.out.println("Option 5 Selected");
+	}
+	
+	public static void purge(StudentBean student[]) {
+
+
+		System.out.println("Option 6 Selected");
+	}
+	
+	public static void quit(StudentBean student[]) {
+		System.out.println("Option 7 Selected");
+		System.out.println("Exiting Program...");
+        System.exit(0);
+	}
+
+}
+	
